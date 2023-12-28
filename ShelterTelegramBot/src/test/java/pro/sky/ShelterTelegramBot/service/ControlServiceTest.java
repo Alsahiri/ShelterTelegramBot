@@ -1,6 +1,8 @@
 package pro.sky.ShelterTelegramBot.service;
 
 
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +17,8 @@ import pro.sky.ShelterTelegramBot.utils.Send;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static pro.sky.ShelterTelegramBot.constants.Constants.Report_Status;
@@ -136,7 +140,7 @@ public class ControlServiceTest {
     controlService.accept(client,report);
 
 }
-
+@Test
 public void refusal(){
     Long chatId=1L;
     Report report2=new Report("Pet_2", LocalDate.now().plusDays(1).format(FORMATTER),2,"На проверке");
@@ -173,6 +177,25 @@ public void refusal(){
     when(petService.createWithReports(pet)).thenReturn(pet);
     when(petService.updateWithReport(pet,report2)).thenReturn(pet);
     when(reportService.updateWithPet(report2,pet)).thenReturn(report);
+    when(report.getStatus()).thenReturn(Report_Status);
+    controlService.refusal(report);
 }
+@Test
+public void loadTest(){
+    Report report3=new Report("Pet_3", LocalDate.now().plusDays(1).format(FORMATTER),2,"На проверке");
+    Report report2=new Report("Pet_2", LocalDate.now().format(FORMATTER),2,"готово к отправке");
+    Report report=new Report("Pet_1", LocalDate.now().format(FORMATTER),2,"готово к отправке");
+
+    List<Report> reportList=new ArrayList<>();
+    reportList.add(report);
+    reportList.add(report2);
+    reportList.add(report3);
+List<Report>reportList2=new ArrayList<>();
+reportList2.add(report);
+reportList2.add(report2);
+    when(reportService.getAll()).thenReturn(reportList);
+    Assertions.assertEquals(reportList2, controlService.load());
+}
+
 
 }

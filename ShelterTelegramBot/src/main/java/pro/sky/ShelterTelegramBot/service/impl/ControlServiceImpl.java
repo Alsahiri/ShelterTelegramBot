@@ -263,7 +263,7 @@ public class ControlServiceImpl implements ControlService {
         List<Report> reports = new ArrayList<>();
         reportService.getAll().forEach(report -> {
             //if (report.getLocalDateTime().equals(LocalDateTime.now().format(FORMATTER))) {
-            if (report.getStatus().equals(ReadyToShip)) {
+            if (report.getStatus().equals(ReadyToShip)&&report.getLocalDateTime().equals(LocalDateTime.now().format(FORMATTER))) {
                 reports.add(report);
             }
 
