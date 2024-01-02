@@ -2,96 +2,113 @@ package pro.sky.ShelterTelegramBot.model;
 
 import jakarta.persistence.*;
 
-import java.util.HashMap;
+
+
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name="Client")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String fullName;
-    private int age;
-    private int telephone;
-    private String address;
-    private String pet;
     private Long chatId;
+    @Column(name = "name", nullable = false)
+    private String name;
+    @Column(name = "age")
+    private int age;
+    @Column(name = "telephone", nullable = false)
+    private String telephone;
+    @Column(name = "address")
+    private String address;
+
+    @OneToMany(mappedBy = "client")
+    private List<Report> report;
     @OneToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
-    @OneToMany
-    @JoinTable(
-            name = "client_attachments_files",
-            joinColumns = {@JoinColumn(name = "client_id")},
-            inverseJoinColumns = {@JoinColumn(name = "attachment_id")}
-    )
+    @JoinColumn(name = "reportBreach_id")
+    private ReportBreach reportBreach;
+    @OneToOne
+    @JoinColumn(name = "reportStatus_id")
+    private ReportStatus reportStatus;
+    @OneToOne
+    @JoinColumn(name = "Client_Status_id")
+    private ClientStatus clientStatus;
+    @OneToMany(mappedBy = "client")
     private List<Attachment> attachments;
-    @OneToMany
-    @JoinTable(name = "client_quests",
-            joinColumns = {@JoinColumn(name = "client_id")},
-            inverseJoinColumns = {@JoinColumn(name = "quest_id")})
-    private List<Quest> quests;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+    @OneToMany(mappedBy = "client")
+    private List<Pet> pet;
 
     public Client() {
     }
 
-    ;
-
-    public Client(String fullName, int age, int telephone, String address, String pet, Long chatId) {
-        this.fullName = fullName;
+    public Client(String name, int age, String telephone, String address) {
+        this.name = name;
         this.age = age;
         this.telephone = telephone;
         this.address = address;
-        this.pet = pet;
+
+    }
+
+    public Client(Long chatId, String name, int age, String telephone, String address) {
         this.chatId = chatId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
+        this.name = name;
         this.age = age;
-    }
-
-    public int getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(int telephone) {
         this.telephone = telephone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
         this.address = address;
+
     }
 
-    public String getPet() {
+
+    public List<Report> getReport() {
+        return report;
+    }
+
+    public void setReport(List<Report> report) {
+        this.report = report;
+    }
+
+    public ReportBreach getReportBreach() {
+        return reportBreach;
+    }
+
+    public void setReportBreach(ReportBreach reportBreach) {
+        this.reportBreach = reportBreach;
+    }
+
+    public ReportStatus getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(ReportStatus reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public Shelter getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
+    }
+
+    public List<Pet> getPet() {
         return pet;
     }
 
-    public void setPet(String pet) {
+    public void setPet(List<Pet> pet) {
         this.pet = pet;
     }
 
@@ -103,29 +120,65 @@ public class Client {
         this.chatId = chatId;
     }
 
+    public ClientStatus getClientStatus() {
+        return clientStatus;
+    }
+
+    public void setClientStatus(ClientStatus clientStatus) {
+        this.clientStatus = clientStatus;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
     @Override
     public String toString() {
         return "Client{" +
                 "id=" + id +
-                ", fullName='" + fullName + '\'' +
+                ", name='" + name + '\'' +
                 ", age=" + age +
                 ", telephone=" + telephone +
                 ", address='" + address + '\'' +
-                ", pet='" + pet + '\'' +
-                ", chatId=" + chatId +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return age == client.age && telephone == client.telephone && Objects.equals(id, client.id) && Objects.equals(fullName, client.fullName) && Objects.equals(address, client.address) && Objects.equals(pet, client.pet) && Objects.equals(chatId, client.chatId);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, fullName, age, telephone, address, pet, chatId);
-    }
 }

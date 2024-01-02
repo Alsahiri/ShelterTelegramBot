@@ -2,106 +2,106 @@ package pro.sky.ShelterTelegramBot.controller;
 
 
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.service.ClientService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/client")
-public class ClientController {
+@RequestMapping("/volunteer")
+public class VolunteerController {
 
-    private final ClientService clientService;
+    private final VolunteerService volunteerService;
 
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
+    public VolunteerController(VolunteerService volunteerService) {
+        this.volunteerService = volunteerService;
     }
 
 
     @Operation(
-            summary = "Создание клиента питомника",
+            summary = "Создание волонтера питомника",
             requestBody = @RequestBody(
-                    description = "Данные создаваемого  клиента питомника." +
+                    description = "Данные создаваемого  волонтера питомника." +
                             "id переданный в теле будет игнорироваться, будет присвоен следующий id из БД. " +
                             "Все поля кроме id обязательны.",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Client.class)
+                            schema = @Schema(implementation = Volunteer.class)
                     )
             ),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Данные созданного  клиента питомника",
+                            description = "Данные созданного  волонтера питомника",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Client.class)
-                           )
+                                    schema = @Schema(implementation = Volunteer.class)
+                            )
 
                     )
             }
     )
     @PostMapping()
-    public ResponseEntity<Client> createClient(@org.springframework.web.bind.annotation.RequestBody Client client)  {
-        return ResponseEntity.ok( clientService.create(client));
+    public ResponseEntity<Volunteer> createVolunteer(@org.springframework.web.bind.annotation.RequestBody Volunteer volunteer)  {
+        return ResponseEntity.ok( volunteerService.create(volunteer));
     }
 
 
     @Operation(
-            summary = "Удаление клиента питомника по id."
+            summary = "Удаление волонтера питомника по id."
     )
     @DeleteMapping("{id}")
-    public ResponseEntity<Client> deleteClient(
-            @Parameter(description = "id удаляемого клиента питомника")
+    public ResponseEntity<Volunteer> deleteClient(
+            @Parameter(description = "id удаляемого волонтера питомника")
             @PathVariable Long id) {
 
-        return ResponseEntity.ok(clientService.delete(id));
+        return ResponseEntity.ok(volunteerService.delete(id));
     }
 
 
     @Operation(
-            summary = "Поиск клиента питомника по id.",
+            summary = "Поиск волонтера питомника по id.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Информация о найденном клиенте питомника",
+                            description = "Информация о найденном волонтера питомника",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Client.class)
+                                    schema = @Schema(implementation = Volunteer.class)
                             )
                     )
             }
     )
     @GetMapping("{id}")
-    public ResponseEntity<Client> getClient(
+    public ResponseEntity<Volunteer> getVolunteer(
             //@Parameter(description = "Идентификатор клиента", example = "1")
             @PathVariable Long id) {
 
-        return ResponseEntity.ok(clientService.get(id));
+        return ResponseEntity.ok(volunteerService.get(id));
     }
 
 
     @Operation(
-            summary = "Получение всех клиентов из БД.",
+            summary = "Получение всех волонтеров из БД.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Все найденные клиенты",
+                            description = "Все найденные волонтеры",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Client.class)
+                                    schema = @Schema(implementation = Volunteer.class)
                             )
                     ),
                     @ApiResponse(
@@ -111,7 +111,8 @@ public class ClientController {
             }
     )
     @GetMapping()
-    public ResponseEntity<Collection<Client>> findAll() {
-        return ResponseEntity.ok(clientService.findAll());
+    public ResponseEntity<Collection<Volunteer>> findAll() {
+        return ResponseEntity.ok(volunteerService.findAll());
     }
 }
+
