@@ -54,6 +54,8 @@ public class AttachmentServiceImplTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
+    private final String path = "ShelterTelegramBot/attachments";
+    private final Path attachmentsDir = Paths.get(path);
 
 
 
@@ -81,8 +83,9 @@ public class AttachmentServiceImplTest {
     @Test
     public void loadFileAsResourceTest() throws IOException {
         String fileName="attach__hello.txt";
-String file1="C:\\Users\\ука\\IdeaProjects\\ShelterTelegramBot\\ShelterTelegramBot\\ShelterTelegramBot\\attachments\\attach__hello.txt";
-        Path file= Paths.get(file1);
+        Path fileStorageLocation =
+                Paths.get(attachmentsDir.toAbsolutePath().toString()).toAbsolutePath().normalize();
+        Path file = fileStorageLocation.resolve(fileName).normalize();
         Resource resource =new UrlResource(file.toUri());
         assertEquals(resource, out.loadFileAsResource(fileName));
     }

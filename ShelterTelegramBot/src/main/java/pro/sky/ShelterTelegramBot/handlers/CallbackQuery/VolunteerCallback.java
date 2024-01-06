@@ -11,20 +11,21 @@ import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pro.sky.ShelterTelegramBot.constants.Constants;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
 import pro.sky.ShelterTelegramBot.model.*;
 import pro.sky.ShelterTelegramBot.service.*;
 import pro.sky.ShelterTelegramBot.utils.Send;
-import pro.sky.ShelterTelegramBot.utils.TelegramFileService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
-
+/**
+ * Класс для обработки CallbackQuery из клавиатур для волонтера
+ */
 @Service
 public class VolunteerCallback {
 
@@ -61,7 +62,12 @@ public class VolunteerCallback {
         this.reportBreachService = reportBreachService;
         this.petService = petService;
     }
-
+    /**
+     * Обработка сallBackQuery из клавиатуры волонтера
+     * Получение всех запросов на усыновление
+     * Получение всех отчетов
+     * @param update
+     */
     public void VolunteerButton(Update update) throws IOException {
         logger.info("VolunteerButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
@@ -72,13 +78,13 @@ public class VolunteerCallback {
                 requestRepoService.getAll().forEach(request -> {
                     Client client = clientService.findByUserName(request.getUserName());
                     InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton("Одобрить запрос").
-                            callbackData(Request_CallBack + "_" + client.getChatId().toString() + "_" + request.getId() + "_" + Accept);
-                    InlineKeyboardButton DenyButton = new InlineKeyboardButton("Отклонить запрос").
-                            callbackData(Request_CallBack + "_" + client.getChatId().toString() + "_" + request.getId() + "_" + Deny);
+                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton(VolunteerAdd).
+                            callbackData(Request_CallBack + _CallBack + client.getChatId().toString() + _CallBack + request.getId() + _CallBack + Accept);
+                    InlineKeyboardButton DenyButton = new InlineKeyboardButton(VolunteerNo).
+                            callbackData(Request_CallBack + _CallBack + client.getChatId().toString() + _CallBack + request.getId() + _CallBack + Deny);
                     keyboardMarkup.addRow(AcceptButton);
                     keyboardMarkup.addRow(DenyButton);
-                    SendMessage sendMessage = new SendMessage(chatId, "Пользователь " + client.getName() + " отправил заявку на усыновление" + request.getPetName());
+                    SendMessage sendMessage = new SendMessage(chatId, Volunteer1 + client.getName() + Volunteer2 + request.getPetName());
                     SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(keyboardMarkup));
                 });
                 break;
@@ -88,10 +94,10 @@ public class VolunteerCallback {
                 controlService.load().forEach(report -> {
                     Client client = report.getClient();
                     InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton("Одобрить запрос").
-                            callbackData(Report_CallBack + "," + client.getChatId().toString() + "," + report.getName() + "," + Accept);
-                    InlineKeyboardButton DenyButton = new InlineKeyboardButton("Отклонить запрос").
-                            callbackData(Report_CallBack + "," + client.getChatId().toString() + "," + report.getName() + "," + Deny);
+                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton(VolunteerAdd).
+                            callbackData(Report_CallBack + Pet_Foreach3 + client.getChatId().toString() + Pet_Foreach3 + report.getName() + Pet_Foreach3 + Accept);
+                    InlineKeyboardButton DenyButton = new InlineKeyboardButton(VolunteerNo).
+                            callbackData(Report_CallBack + Pet_Foreach3 + client.getChatId().toString() + Pet_Foreach3 + report.getName() + Pet_Foreach3 + Deny);
                     keyboardMarkup.addRow(AcceptButton);
                     keyboardMarkup.addRow(DenyButton);
                     try {
@@ -101,14 +107,18 @@ public class VolunteerCallback {
                         throw new RuntimeException(e);
                     }
 
-                    SendMessage sendMessage = new SendMessage(chatId, "Пользователь " + client.getName() + " отправил отчет на проверку");
+                    SendMessage sendMessage = new SendMessage(chatId, Volunteer1 + client.getName() + Volunteer2);
                     SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(keyboardMarkup));
 
                 });
                 break;
         }
     }
-
+    /**
+     * Обработка сallBackQuery по резкльтатам работы с отчетами
+     * Одобрениие и отказ для каждого отчета
+     * @param update
+     */
     public void ReportButton(Update update) throws IOException {
         logger.info("method ReportButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
@@ -124,11 +134,11 @@ public class VolunteerCallback {
                 if (report.isPresent()) {
                     logger.info("method ReportButtonReadyToShip is invoke");
                     controlService.accept(client, report.get());
-                    SendMessage sendMessage1 = new SendMessage(client.getChatId(), "Ваш отчет одобрили");
+                    SendMessage sendMessage1 = new SendMessage(client.getChatId(), VolunteerAcceptReport);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 } else {
-                    SendMessage sendMessage1 = new SendMessage(chatId, "Вам уже одобрили этот отчет");
+                    SendMessage sendMessage1 = new SendMessage(chatId, VolunteerAcceptReportAgain);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 }
@@ -136,17 +146,21 @@ public class VolunteerCallback {
                 if (report.isPresent()) {
                     logger.info("method ReportButtonDeny is invoke");
                     controlService.refusal(report.get());
-                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), "Ваш отчет не приняли, если есть вопросы свяжитесь с волонтером");
+                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), VolunteerDenyReport);
                     SendResponse response2 = telegramBot.execute(sendMessage2);
                     break;
                 } else {
-                    SendMessage sendMessage1 = new SendMessage(chatId, "Вам уже отправили отказ");
+                    SendMessage sendMessage1 = new SendMessage(chatId, VolunteerDenyAgain);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 }
         }
     }
-
+    /**
+     * Обработка сallBackQuery по резкльтатам работы с запросами
+     * Одобрениие и отказ для каждого запоса
+     * @param update
+     */
     public void RequestButton(Update update) throws IOException {
         logger.info("method handlerCatButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
@@ -186,22 +200,22 @@ public class VolunteerCallback {
                     reportService.updateWithPet(report, pet);
                     reportService.updateWithClient(client, report);
                     requestRepoService.delete(Long.parseLong(nameClient[2]));
-                    SendMessage sendMessage1 = new SendMessage(chatId2, "Вам одобрили усыновление  питомца. С сегодняшнего дня в должны присылать отчет");
+                    SendMessage sendMessage1 = new SendMessage(chatId2, Constants.VolunteerAcceptReport);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 } else {
-                    SendMessage sendMessage1 = new SendMessage(chatId, "Вам уже одобрили эту заявку");
+                    SendMessage sendMessage1 = new SendMessage(chatId, VolunteerAcceptRequestAgain);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 }
             case Deny:
                 if (request.isPresent()) {
                     requestRepoService.delete(Long.parseLong(nameClient[2]));
-                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), "Вам отказали в усыновлении питомца. Для получения причин отказа свяжитесь с волонтером");
+                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), VolunteerDenyRequest);
                     SendResponse response2 = telegramBot.execute(sendMessage2);
                     break;
                 } else {
-                    SendMessage sendMessage1 = new SendMessage(chatId, "Вам уже отправии отказ");
+                    SendMessage sendMessage1 = new SendMessage(chatId, VolunteerDenyReportAgain);
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 }

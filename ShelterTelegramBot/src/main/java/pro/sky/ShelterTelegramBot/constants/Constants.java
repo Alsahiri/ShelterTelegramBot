@@ -28,6 +28,73 @@ public class Constants {
     public static final String ReportControl = "1984_ReportControl";
     public static final String CALL = "1984_CALL";
 
+    public static final String Cat_Message = "Приют кошек";
+    public static final String Dog_Message ="Приют собак";
+    public static final String Info_Message1 ="Расписание работы";
+    public static final String Info_Message2 ="Оформление пропуска на машину";
+    public static final String Info_Message3 ="Техника безопасности на территории приюта";
+    public static final String Info_Message4 ="Отправить контактные данные";
+    public static final String Info_Message5 ="Позвать волонтера";
+    public static final String Info_Pet_Message1 ="Получить список животных для усыновления";
+    public static final String Info_Pet_Message2 ="Правила знакомства с животным в приюте";
+    public static final String Info_Pet_Message3 ="Список документов для усыновления";
+    public static final String Info_Pet_Message4 ="Рекомендации по транспортировке";
+    public static final String Info_Pet_Message5 ="Причины для отказа в усыновлении";
+    public static final String Info_Pet_Message6 ="Отправить контактные данные";
+    public static final String Info_Pet_Message7 ="Позвать волонтера";
+    public static final String Info_Pet_Cat_Message1="Рекомендаций по обустройству дома для котёнка";
+    public static final String Info_Pet_Cat_Message2="Рекомендаций по обустройству дома для взрослой кошки";
+    public static final String Info_Pet_Cat_Message3="Рекомендаций по обустройству дома для  кошки с ограниченными возможностями";
+    public static final String Info_Pet_Dog_Message1="Рекомендаций по обустройству дома для щенка";
+    public static final String Info_Pet_Dog_Message2="Рекомендаций по обустройству дома для взрослой собаки";
+    public static final String Info_Pet_Dog_Message3="Рекомендаций по обустройству дома для  собаки с ограниченными возможностями";
+    public static final String Info_Pet_Dog_Message4="Рекомендация кинолога по адаптации собаки/щенка на новом месте";
+    public static final String Info_Pet_Dog_Message5="Контакты кинологов";
+    public static final String Menu1="Общая информация о приюте";
+    public static final String Menu2="Как взять собаку из приюта";
+    public static final String Menu2_1="Как взять кошку из приюта";
+    public static final String Menu3="Отправить отчет";
+    public static final String Menu4="Позвать волонтера";
+    public static final String VolunteerMenu1="Получить запросы об усыновлении";
+    public static final String VolunteerMenu2="Получить отчеты об усыновлении";
+    public static final String ControlMenu1="Правила сдачи отчета";
+    public static final String ControlMenu2="Получить название текущего отчета для отправки";
+    public static final String ControlMenu3="Отправить фото питмца";
+    public static final String ControlMenu4="Отправить текст";
+    public static final String ControlMenu5="Отправить отчет";
+    public static final String ControlMenu6="Позвать волонтера";
+    public static final String START_COMMAND = "/start";
+    public static final String HELP_COMMAND = "/help";
+
+    public static final String Error = "Вы провалили проверку, бот для вас заблокирован. Ожидайте приезда волонтеров";
+    public static final String VolunteerHello ="Приятной работы ";
+    public static final String Error_Main ="Данная комманда не поддерживается ботом";
+    public static final String Welcome_Volunteer = "Вы успешно стали волонтером. Так как мы не реализовали функцию удления данных волонтера из приложения, Вы с нами надолго)))";
+    public static final String Welcome_Error = "Вы уже являетесь волонтером. P.S - функция удаления по прежнему отсуствует((.РАБотайте! ";
+    public static final String Name_1_Volunteer="@";
+    public static final String Name_2_Volunteer=" -ваш личный помошник. Готов помочь с любой проблемой)";
+    public static final String Pet_Foreach="Получить информацию о питомце";
+    public static final String Pet_Foreach2="Приютить питомца";
+    public static final String Pet_Foreach3=",";
+    public static final String Pet_Info="Имя питомца - ";
+    public static final String Pet_Info2=" пол ";
+    public static final String Pet_Info3="Ваш запрос об усыновлении передан волотёру";
+    public static final String Pet_Info4="Вы уже передали запрос об усыновлении волотёру";
+    public static final String Pet_Error = "Вы провалили проверку, бот для вас заблокирован. Ожидайте приезда волонтеров";
+    public static final String Control_Welcome ="Меню отправки отчета приветствует Вас";
+    public static final String Control_Er ="Вы еще не взяли ни одного питомца на усыновление";
+    public static final String VolunteerAdd ="Одобрить запрос";
+    public static final String VolunteerNo ="Отклонить запрос";
+    public static final String Volunteer1="Пользователь ";
+    public static final String Volunteer2=" отправил заявку на усыновление";
+    public static final String VolunteerDenyReport ="Ваш отчет не приняли, если есть вопросы свяжитесь с волонтером";
+    public static final String VolunteerDenyAgain="Вам уже отправили отказ";
+    public static final String VolunteerAcceptRequest ="Вам одобрили усыновление  питомца. С сегодняшнего дня в должны присылать отчет";
+    public static final String VolunteerAcceptRequestAgain ="Вам уже одобрили эту заявку";
+    public static final String VolunteerDenyRequest ="Вам отказали в усыновлении питомца. Для получения причин отказа свяжитесь с волонтером";
+    public static final String VolunteerDenyReportAgain="Вам уже отправии отказ";
+    public static final String VolunteerAcceptReport ="Ваш отчет одобрили";
+    public static final String VolunteerAcceptReportAgain ="Вам уже одобрили этот отчет";
 
     public static final String Guest_Status = "Гость";
     public static final String Registration_Status = "Зарегистрирован";
@@ -43,6 +110,8 @@ public class Constants {
     public static final String Request_CallBack = "001";
     public static final String Report_CallBack = "002";
     public static final String Create_Report = "333";
+    public static final String _CallBack = "_";
+
 
 
     public static final String Get_Request = "000_GetRequest";
@@ -146,13 +215,37 @@ public class Constants {
     public final static String CatsPetsInfo = "011_CatsPetsInfo";
     public final static String CatsControlService = "011_CatsControlService";
     public final static String CALLCats_12 = "011_CALLCat";
+    public final static String Report_Name = "Для получения имени текущего отчета отправьте имя питомца";
 
+    public final static String A__11 = "attach__11.jpg";
+    public final static String A__00 = "attach__00.jpg";
+    public final static String A__01 ="attach__01.docx";
+    public final static String A__021 ="attach__021.docx";
+    public final static String A__022 ="attach__022.docx";
+    public final static String A__023 ="attach__023.docx";
+    public final static String A__024 ="attach__22_024.docx";
+    public final static String A__025 ="attach__22_025.docx";
+    public final static String A__026 ="attach__22_026.docx";
+    public final static String A__027 ="attach__22_027.docx";
+    public final static String A__028 ="attach__22_028.docx";
+    public final static String A__029 ="attach__22_029.docx";
 
-    public final static String BUTTON_INFO_TEXT = "Узнать информацию о приюте";
+    public final static String A__24 ="attach__21_024.docx";
+    public final static String A__25 ="attach__21_025.docx";
+    public final static String A__26 ="attach__21_026.docx";
+    public final static String A__27 ="attach__21_027.docx";
+
+    public final static String A__000="правила.txt";
+    public final static String ErrorGetPet="Вы еще не зарегистрированы, пожалуйста пройдите регистрацию через отправку контактов";
+
     public final static String BUTTON_HOW_TO_PICK_UP_TEXT = "Как взять питомца из приюта";
     public final static String BUTTON_SEND_REPORT_TEXT = "Прислать отчет о питомце";
     public final static String BUTTON_CALL_VOLUNTEER_TEXT = "Позвать волонтера";
     public final static String BUTTON_BACK_TEXT = "Вернутся назад";
+
+
+
+
 
     //3-й уровень кнопок
     //Информация о приюте

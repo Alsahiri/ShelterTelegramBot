@@ -23,7 +23,9 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
-
+/**
+ * Класс для обработки CallbackQuery из клавиатур для кошачьего питомника
+ */
 @Service
 public class CatCallbackQuery {
 
@@ -55,7 +57,8 @@ public class CatCallbackQuery {
     }
 
     /**
-     * обработка сallBackQuery для клавиатуры CAT
+     * обработка CallBackQuery для клавиатуры CAT
+     * Общая инфа по питомнику
      *
      * @param update
      */
@@ -67,7 +70,7 @@ public class CatCallbackQuery {
         switch (callbackQuery.data()) {
             case WORK_SCHEDULE:
                 clientStatusService.clickCat(chatId, 1);
-                SendPhoto sendPhoto = new SendPhoto(chatId, attachmentService.loadFile("attach__11.jpg"));
+                SendPhoto sendPhoto = new SendPhoto(chatId, attachmentService.loadFile(A__11));
                 SendResponse response = telegramBot.execute(sendPhoto);
                 break;
             case REGISTRATION_CARCat:
@@ -77,7 +80,7 @@ public class CatCallbackQuery {
                 break;
             case SAFETYCat:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc = new SendDocument(chatId, attachmentService.loadFile("attach__01.docx"));
+                SendDocument sendDoc = new SendDocument(chatId, attachmentService.loadFile(A__01));
                 SendResponse response3 = telegramBot.execute(sendDoc);
                 break;
             case CREATECat:
@@ -91,7 +94,7 @@ public class CatCallbackQuery {
             case CALLCat:
                 clientStatusService.clickCat(chatId, 1);
                 Volunteer volunteer = volunteerService.findByStatus(0, 2);
-                String volunteerName = "@" + volunteer.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+                String volunteerName = Name_1_Volunteer + volunteer.getUserName() + Name_2_Volunteer;
                 SendMessage sendMessage5 = new SendMessage(chatId, volunteerName);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;
@@ -100,6 +103,11 @@ public class CatCallbackQuery {
         }
     }
 
+    /**
+     * Обработка сallBackQuery для клавиатуры CAT
+     * информация, документация и список питомцев
+     * @param update
+     */
     public void infoPetsCatButton(Update update) throws IOException {
         logger.info("method infoPetsCatButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
@@ -109,13 +117,15 @@ public class CatCallbackQuery {
         switch (callbackQuery.data()) {
 
             case PetCatsList:
+                Optional<Client>client=Optional.ofNullable( clientStatusService.findClient(chatId).getClient());
+                if (client.isPresent()){
                 petService.findAllByPetType(Cats_Shelter).forEach(pet -> {
                     InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-                    String CallBackInfo = Create_Report + "," + Pets_Information + "," + chatId + "," + pet.getId();
-                    String CallBackGet = Create_Report + "," + Pets_Get + "," + chatId + "," + pet.getId();
-                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton("Получить информацию о питомце").
+                    String CallBackInfo = Create_Report + Pet_Foreach3 + Pets_Information + Pet_Foreach3 + chatId + Pet_Foreach3 + pet.getId();
+                    String CallBackGet = Create_Report + Pet_Foreach3 + Pets_Get + Pet_Foreach3 + chatId + Pet_Foreach3 + pet.getId();
+                    InlineKeyboardButton AcceptButton = new InlineKeyboardButton(Pet_Foreach).
                             callbackData(CallBackInfo);
-                    InlineKeyboardButton DenyButton = new InlineKeyboardButton("Приютить питомца").
+                    InlineKeyboardButton DenyButton = new InlineKeyboardButton(Pet_Foreach2).
                             callbackData(CallBackGet);
                     keyboardMarkup.addRow(AcceptButton);
                     keyboardMarkup.addRow(DenyButton);
@@ -129,40 +139,45 @@ public class CatCallbackQuery {
                     SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(keyboardMarkup));
 //                    send.sendMessageReturn(sendMessage.replyMarkup(keyboardMarkup));
                 });
+                }
+                else {
+                    SendMessage sendMessage=new SendMessage(chatId,ErrorGetPet);
+                    send.sendMessage(sendMessage);
+                }
                 break;
             case RulesDatingCat:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc2 = new SendDocument(chatId, attachmentService.loadFile("attach__021.docx"));
+                SendDocument sendDoc2 = new SendDocument(chatId, attachmentService.loadFile(A__021));
                 SendResponse response7 = telegramBot.execute(sendDoc2);
                 break;
             case DocCat:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc3 = new SendDocument(chatId, attachmentService.loadFile("attach__022.docx"));
+                SendDocument sendDoc3 = new SendDocument(chatId, attachmentService.loadFile(A__022));
                 SendResponse response8 = telegramBot.execute(sendDoc3);
                 break;
             case TransportOfCat:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc4 = new SendDocument(chatId, attachmentService.loadFile("attach__023.docx"));
+                SendDocument sendDoc4 = new SendDocument(chatId, attachmentService.loadFile(A__023));
                 SendResponse response9 = telegramBot.execute(sendDoc4);
                 break;
             case HomeCatsChild:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc5 = new SendDocument(chatId, attachmentService.loadFile("attach__21_024.docx"));
+                SendDocument sendDoc5 = new SendDocument(chatId, attachmentService.loadFile(A__24));
                 SendResponse response10 = telegramBot.execute(sendDoc5);
                 break;
             case HomeCatsAdult:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc6 = new SendDocument(chatId, attachmentService.loadFile("attach__21_025.docx"));
+                SendDocument sendDoc6 = new SendDocument(chatId, attachmentService.loadFile(A__25));
                 SendResponse response11 = telegramBot.execute(sendDoc6);
                 break;
             case HomeCatsDisabilities:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc7 = new SendDocument(chatId, attachmentService.loadFile("attach__21_026.docx"));
+                SendDocument sendDoc7 = new SendDocument(chatId, attachmentService.loadFile(A__26));
                 SendResponse response12 = telegramBot.execute(sendDoc7);
                 break;
             case FailCats:
                 clientStatusService.clickCat(chatId, 1);
-                SendDocument sendDoc8 = new SendDocument(chatId, attachmentService.loadFile("attach__21_027.docx"));
+                SendDocument sendDoc8 = new SendDocument(chatId, attachmentService.loadFile(A__27));
                 SendResponse response13 = telegramBot.execute(sendDoc8);
                 break;
             case CREATECats_31:
@@ -176,13 +191,17 @@ public class CatCallbackQuery {
             case CALLCats_31:
                 clientStatusService.clickCat(chatId, 2);
                 Volunteer volunteer2 = volunteerService.findByStatus(0, 2);
-                String volunteerName2 = "@" + volunteer2.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+                String volunteerName2 = Name_1_Volunteer + volunteer2.getUserName() + Name_2_Volunteer;
                 SendMessage sendMessage9 = new SendMessage(chatId, volunteerName2);
                 SendResponse response15 = telegramBot.execute(sendMessage9);
                 break;
         }
     }
-
+    /**
+     * Обработка сallBackQuery из кнопки PetCatsList
+     * информация,  и генерация запроса на усыновления питомца
+     * @param update
+     */
     public void getPetsCatButton(Update update) throws IOException {
         logger.info("method getPetsCatButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
@@ -193,7 +212,7 @@ public class CatCallbackQuery {
         switch (parts[1]) {
             case Pets_Information:
                 Pet pet = petService.get(Long.valueOf(parts[3]));
-                SendMessage sendMessage1 = new SendMessage(client.getChatId(), "Имя питомца" + pet.getName() + "пол" + pet.getGender());
+                SendMessage sendMessage1 = new SendMessage(client.getChatId(), Pet_Info + pet.getName() + Pet_Info2 + pet.getGender());
                 SendResponse response1 = telegramBot.execute(sendMessage1);
                 break;
             case Pets_Get:
@@ -202,11 +221,11 @@ public class CatCallbackQuery {
                 if (requestCheck.isEmpty()) {
                     Request request = new Request(client.getName(), pet2.getName());
                     requestRepoService.create(request);
-                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), "Ваш запрос об усыновлении передан волотёру");
+                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), Pet_Info3);
                     SendResponse response2 = telegramBot.execute(sendMessage2);
                     break;
                 } else {
-                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), "Вы уже передали запрос об усыновлении волотёру");
+                    SendMessage sendMessage2 = new SendMessage(client.getChatId(), Pet_Info4);
                     SendResponse response2 = telegramBot.execute(sendMessage2);
                 }
         }

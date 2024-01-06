@@ -30,7 +30,9 @@ import java.util.regex.Pattern;
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.handlers.Button.MenuVolunteerButtons;
 import static pro.sky.ShelterTelegramBot.handlers.Button.animalSelectionButtons;
-
+/**
+ * Класс для обработки сообщений пользователя
+ */
 @Service
 public class MainMenuHandler {
 
@@ -50,12 +52,9 @@ public class MainMenuHandler {
     private final PetService petService;
 
 
-    private static final String START_COMMAND = "/start";
-    private static final String HELP_COMMAND = "/help";
 
-    /**
-     * Класс для обработки сообщений пользователя
-     */
+
+
     public MainMenuHandler(TelegramBot telegramBot, Send send, ClientService clientService, ClientStatusService clientStatusService, VolunteerService volunteerService, TelegramFileService telegramFileService
             , ControlService controlService,
                            UserStatementService userStatementService,
@@ -92,13 +91,11 @@ public class MainMenuHandler {
         Optional<ClientStatus> clientStatusError = Optional.ofNullable(clientStatusService.findClient(update.message().chat().id()));
 
         if (clientStatusError.isPresent() && clientStatusError.get().getClientStatus().equals(Failed_Status)) {
-            String error = "Вы провалили проверку, бот для вас заблокирован. Ожидайте приезда волонтеров";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), Error);
             SendResponse sendResponse = telegramBot.execute(sendMessage);
         } else if (text.isEmpty()) {
             Optional<UserStatement> userStatement2 = Optional.ofNullable(clientStatusService.findClient(chatId).getUserStatement());
             logger.info("text.isEmpty()");
-            //UserStatement userStatement=clientStatusService.findClient(chatId).getUserStatement();
             if (update.message().photo() != null) {
                 logger.info(" photo handler");
                 telegramFileService.getLocalPathTelegramFile(update);
@@ -123,7 +120,7 @@ public class MainMenuHandler {
                 saveVolunteer(update);
             } else if (text.get().equals(volunteerService.findByUserName(text.get()).getUserName())) {
                 logger.info("startVolunteer");
-                String returnText = "Приятной работы " + text;
+                String returnText = VolunteerHello + text;
                 SendMessage sendMessage = new SendMessage(chatId, returnText);
                 send.sendMessage(sendMessage.replyMarkup(MenuVolunteerButtons()));
             } else if (text.get().charAt(0) == '!') {
@@ -172,7 +169,7 @@ public class MainMenuHandler {
                 return ASK_HELP;
 
             default:
-                return "Данная комманда не поддерживается ботом";
+                return Error_Main;
         }
     }
 
@@ -202,12 +199,10 @@ public class MainMenuHandler {
             Long id = volunteerService.getCount();
             Volunteer volunteer = new Volunteer(id, userName, 0);
             volunteerService.create(volunteer);
-            String welcome = "Вы успешно стали волонтером. Так как мы не реализовали функцию удления данных волонтера из приложения, Вы с нами надолго)))";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), Welcome_Volunteer);
             send.sendMessage(sendMessage);
         } else {
-            String welcome = "Вы уже являетесь волонтером. P.S - функция удаления по прежнему отсуствует((.РАБотайте! ";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), Welcome_Error);
             send.sendMessage(sendMessage);
         }
 
@@ -221,7 +216,7 @@ public class MainMenuHandler {
             shelterService.create(shelter2);
             logger.info("приюты созданы" + shelterService.getCount());
         } else {
-            logger.info("приюты созданы" + shelterService.getCount());
+            logger.info("ранее приюты уже были созданы" + shelterService.getCount());
         }
     }
 

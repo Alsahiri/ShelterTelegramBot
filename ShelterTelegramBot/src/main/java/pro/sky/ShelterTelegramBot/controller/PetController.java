@@ -15,7 +15,9 @@ import pro.sky.ShelterTelegramBot.model.Shelter;
 import pro.sky.ShelterTelegramBot.service.PetService;
 
 import java.util.Collection;
-
+/**
+ * Контроллер для взаимодействия с бизнес-логикой по работе с моделью питомца
+ */
 @RestController
 @RequestMapping("/pet")
 public class PetController {
@@ -25,7 +27,9 @@ public class PetController {
     public PetController(PetService petService) {
         this.petService = petService;
     }
-
+    /**
+     * Создание питомца
+     */
     @Operation(
             summary = "Создание питомца",
             requestBody = @RequestBody(
@@ -53,7 +57,9 @@ public class PetController {
     public ResponseEntity<Pet> createPet(@org.springframework.web.bind.annotation.RequestBody Pet pet) {
         return ResponseEntity.ok(petService.create(pet));
     }
-
+    /**
+     * Удаление питомца по id
+     */
     @Operation(
             summary = "Удаление питомца по id."
     )
@@ -65,7 +71,9 @@ public class PetController {
         return ResponseEntity.ok(petService.delete(id));
     }
 
-
+    /**
+     * Поиск питомца по id
+     */
     @Operation(
             summary = "Поиск питомца по id.",
             responses = {
@@ -86,7 +94,9 @@ public class PetController {
 
         return ResponseEntity.ok(petService.get(id));
     }
-
+    /**
+     * Получение всех питомцев из БД одного питомника
+     */
     @Operation(
             summary = "Получение всех питомцев из БД одного питомника.",
             responses = {

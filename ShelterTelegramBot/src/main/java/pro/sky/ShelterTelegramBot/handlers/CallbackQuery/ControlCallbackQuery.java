@@ -15,7 +15,9 @@ import pro.sky.ShelterTelegramBot.service.*;
 import java.io.IOException;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
-
+/**
+ * Класс для обработки CallbackQuery из клавиатур для работы с отчетом
+ */
 @Service
 public class ControlCallbackQuery {
 
@@ -45,15 +47,14 @@ public class ControlCallbackQuery {
         logger.info("ControlCallBack is invoke");
         switch (CallBack) {
             case ReportInfo:
-                SendDocument sendDoc = new SendDocument(chatId, attachmentService.loadFile("правила.txt"));
+                SendDocument sendDoc = new SendDocument(chatId, attachmentService.loadFile(A__000));
                 SendResponse response = telegramBot.execute(sendDoc);
                 break;
             case GetReportName:
-                String reportName = "Для получения имени текущего отчета отправьте имя питомца";
                 UserStatement userStatement3 = clientStatusService.findClient(chatId).getUserStatement();
                 userStatement3.setStatement("#");
                 userStatementService.update(userStatement3);
-                SendMessage sendMessage3 = new SendMessage(chatId, reportName);
+                SendMessage sendMessage3 = new SendMessage(chatId, Report_Name);
                 SendResponse response3 = telegramBot.execute(sendMessage3);
                 break;
             case PetsPhoto:
@@ -81,7 +82,7 @@ public class ControlCallbackQuery {
                 break;
             case CALL:
                 pro.sky.ShelterTelegramBot.model.Volunteer volunteer = volunteerService.findByStatus(0, 2);
-                String volunteerName = "@" + volunteer.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+                String volunteerName = Name_1_Volunteer + volunteer.getUserName() + Name_2_Volunteer;
                 SendMessage sendMessage5 = new SendMessage(chatId, volunteerName);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;

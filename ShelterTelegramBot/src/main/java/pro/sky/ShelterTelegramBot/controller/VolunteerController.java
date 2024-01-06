@@ -17,7 +17,9 @@ import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 
 import java.util.Collection;
-
+/**
+ * Контроллер для взаимодействия с бизнес-логикой по работе с моделью волонтера
+ */
 @RestController
 @RequestMapping("/volunteer")
 public class VolunteerController {
@@ -28,7 +30,9 @@ public class VolunteerController {
         this.volunteerService = volunteerService;
     }
 
-
+    /**
+     * Создание волонтера питомника
+     */
     @Operation(
             summary = "Создание волонтера питомника",
             requestBody = @RequestBody(
@@ -57,7 +61,9 @@ public class VolunteerController {
         return ResponseEntity.ok(volunteerService.create(volunteer));
     }
 
-
+    /**
+     * Удаление волонтера питомника по id
+     */
     @Operation(
             summary = "Удаление волонтера питомника по id."
     )
@@ -69,7 +75,9 @@ public class VolunteerController {
         return ResponseEntity.ok(volunteerService.delete(id));
     }
 
-
+    /**
+     * Поиск волонтера питомника по id
+     */
     @Operation(
             summary = "Поиск волонтера питомника по id.",
             responses = {
@@ -91,7 +99,9 @@ public class VolunteerController {
         return ResponseEntity.ok(volunteerService.get(id));
     }
 
-
+    /**
+     * Получение всех волонтеров из БД
+     */
     @Operation(
             summary = "Получение всех волонтеров из БД.",
             responses = {

@@ -30,7 +30,9 @@ import java.util.Optional;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.handlers.Button.*;
-
+/**
+ * Класс для обработки и распределения CallBackQuery
+ */
 @Service
 public class HandlerCallbackQuery {
 
@@ -49,9 +51,7 @@ public class HandlerCallbackQuery {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    /**
-     * Класс для обработки и распределения CallBackQuery
-     */
+
     public HandlerCallbackQuery(TelegramBot telegramBot,
                                 ClientStatusService clientStatusService, Send send,
                                 DogCallbackQuery dogCallbackQuery, CatCallbackQuery catCallbackQuery,
@@ -85,8 +85,7 @@ public class HandlerCallbackQuery {
     public void responseButton(Update update) throws IOException {
         Optional<ClientStatus> clientStatusError = Optional.ofNullable(clientStatusService.findClient(update.callbackQuery().message().chat().id()));
         if (clientStatusError.get().getClientStatus().equals(Failed_Status)) {
-            String error = "Вы провалили проверку, бот для вас заблокирован. Ожидайте приезда волонтеров";
-            SendMessage sendMessage = new SendMessage(update.callbackQuery().message().chat().id(), error);
+            SendMessage sendMessage = new SendMessage(update.callbackQuery().message().chat().id(), Pet_Error);
             SendResponse sendResponse = telegramBot.execute(sendMessage);
         } else {
             CallbackQuery callbackQuery = update.callbackQuery();
@@ -136,19 +135,19 @@ public class HandlerCallbackQuery {
                 Optional<Pet> pet1 = petService.findPetByClient(client.get());
                 if (pet1.isPresent()) {
                     clientStatusService.clickCat(chatId, 1);
-                    SendMessage sendMessage3 = new SendMessage(chatId, "Меню отправки отчета приветствует Вас");
+                    SendMessage sendMessage3 = new SendMessage(chatId, Control_Welcome);
                     SendResponse response3 = telegramBot.execute(sendMessage3.replyMarkup(MenuReportButtons()));
                     break;
                 } else {
                     clientStatusService.clickCat(chatId, 1);
-                    SendMessage sendMessage3 = new SendMessage(chatId, "Вы еще не взяли ни одного питомца на усыновление");
+                    SendMessage sendMessage3 = new SendMessage(chatId, Control_Er);
                     SendResponse response3 = telegramBot.execute(sendMessage3);
                     break;
                 }
             case CALLCats_12:
                 clientStatusService.clickCat(chatId, 1);
                 Volunteer volunteer = volunteerService.findByStatus(0, 2);
-                String volunteerName = "@" + volunteer.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+                String volunteerName = Name_1_Volunteer + volunteer.getUserName() + Name_2_Volunteer;
                 SendMessage sendMessage5 = new SendMessage(chatId, volunteerName);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;
@@ -179,19 +178,19 @@ public class HandlerCallbackQuery {
                 Optional<Pet> pet1 = petService.findPetByClient(client.get());
                 if (pet1.isPresent()) {
                     clientStatusService.clickCat(chatId, 1);
-                    SendMessage sendMessage3 = new SendMessage(chatId, "Меню отправки отчета приветствует Вас");
+                    SendMessage sendMessage3 = new SendMessage(chatId, Control_Welcome);
                     SendResponse response3 = telegramBot.execute(sendMessage3.replyMarkup(MenuReportButtons()));
                     break;
                 } else {
                     clientStatusService.clickCat(chatId, 1);
-                    SendMessage sendMessage3 = new SendMessage(chatId, "Вы еще не взяли ни одного питомца на усыновление");
+                    SendMessage sendMessage3 = new SendMessage(chatId, Control_Er);
                     SendResponse response3 = telegramBot.execute(sendMessage3);
                     break;
                 }
             case CALLDogs_12:
                 clientStatusService.clickDog(chatId, 1);
                 Volunteer volunteer = volunteerService.findByStatus(0, 2);
-                String volunteerName = "@" + volunteer.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+                String volunteerName = Name_1_Volunteer + volunteer.getUserName() + Name_2_Volunteer;
                 SendMessage sendMessage5 = new SendMessage(chatId, volunteerName);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;

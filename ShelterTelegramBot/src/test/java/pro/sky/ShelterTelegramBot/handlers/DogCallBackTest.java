@@ -63,7 +63,7 @@ public class DogCallBackTest {
         when(clientStatusService.findClient(1L)).thenReturn(clientStatus);
         when(clientStatus.getClient()).thenReturn(client);
 
-        dogCallBackQuery.getPetsCatButton(update);
+        dogCallBackQuery.getPetsDogButton(update);
 
     }
 }

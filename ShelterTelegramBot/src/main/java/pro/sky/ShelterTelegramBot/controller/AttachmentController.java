@@ -21,7 +21,9 @@ import pro.sky.ShelterTelegramBot.service.AttachmentService;
 
 import java.io.IOException;
 
-
+/**
+ * Контроллер для получения и отправки файлов
+ */
 @Controller
 @RequestMapping("/attachments")
 public class AttachmentController {
@@ -32,7 +34,9 @@ public class AttachmentController {
         this.attachmentService = attachmentService;
     }
 
-
+    /**
+     * Загрузка файла в приложение
+     */
     @Operation(
             summary = "Загрузка файла в приложение",
             requestBody = @RequestBody(
@@ -52,7 +56,9 @@ public class AttachmentController {
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
+    /**
+     * Передача файла по ссылке
+     */
     @Operation(
             summary = "Передача файла по ссылке",
             requestBody = @RequestBody(

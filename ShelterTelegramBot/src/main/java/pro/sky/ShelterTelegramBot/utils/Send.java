@@ -51,26 +51,8 @@ public class Send {
             logger.error("Error during sending message: {}", response.description());
         }
     }
-    /**
-     * for test
-     */
-    public String sendMessageReturn(SendMessage message) {
-        SendResponse response = telegramBot.execute(message);
-        if (!response.isOk()) {
-            logger.error("Error during sending message: {}", response.description());
-        }
-        return message.toString();
-    }
 
-    public String sendPhotoReturn(String s, Update update) {
-        Path path = Paths.get(s);
-        SendPhoto sendPhoto = new SendPhoto(update.message().chat().id(), path.toFile());
-        SendResponse response = telegramBot.execute(sendPhoto);
-        if (!response.isOk()) {
-            logger.error("Error during sending message: {}", response.description());
-        }
-        return s;
-    }
+
 
 
 }

@@ -16,7 +16,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 import java.util.Collection;
-
+/**
+ * Контроллер для взаимодействия с бизнес-логикой по работе с моделью клиента
+ */
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -27,7 +29,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-
+    /**
+     * Создание клиента питомника
+     */
     @Operation(
             summary = "Создание клиента питомника",
             requestBody = @RequestBody(
@@ -56,7 +60,9 @@ public class ClientController {
         return ResponseEntity.ok(clientService.create(client));
     }
 
-
+    /**
+     * Удаление клиента питомника по id
+     */
     @Operation(
             summary = "Удаление клиента питомника по id."
     )
@@ -68,7 +74,9 @@ public class ClientController {
         return ResponseEntity.ok(clientService.delete(id));
     }
 
-
+    /**
+     * Поиск клиента питомника по id
+     */
     @Operation(
             summary = "Поиск клиента питомника по id.",
             responses = {
@@ -90,7 +98,9 @@ public class ClientController {
         return ResponseEntity.ok(clientService.get(id));
     }
 
-
+    /**
+     * Получение всех клиентов из БД
+     */
     @Operation(
             summary = "Получение всех клиентов из БД.",
             responses = {
