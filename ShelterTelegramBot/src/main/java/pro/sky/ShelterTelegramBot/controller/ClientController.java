@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 import java.util.Collection;
-
+/**
+ * Контроллер для взаимодействия с бизнес-логикой по работе с моделью клиента
+ */
 @RestController
 @RequestMapping("/client")
 public class ClientController {
@@ -28,7 +29,9 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-
+    /**
+     * Создание клиента питомника
+     */
     @Operation(
             summary = "Создание клиента питомника",
             requestBody = @RequestBody(
@@ -53,40 +56,27 @@ public class ClientController {
             }
     )
     @PostMapping()
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client client1 = clientService.create(client);
-        if (client1 == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(client1);
+    public ResponseEntity<Client> createClient(@org.springframework.web.bind.annotation.RequestBody Client client) {
+        return ResponseEntity.ok(clientService.create(client));
     }
 
-
+    /**
+     * Удаление клиента питомника по id
+     */
     @Operation(
-            summary = "Удаление клиента питомника по id.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Данные удаляемого клиента питомника.",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Client.class)
-                            )
-                    )
-            }
+            summary = "Удаление клиента питомника по id."
     )
     @DeleteMapping("{id}")
     public ResponseEntity<Client> deleteClient(
             @Parameter(description = "id удаляемого клиента питомника")
             @PathVariable Long id) {
-        Client client = clientService.get(id);
-        if (client == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
         return ResponseEntity.ok(clientService.delete(id));
     }
 
-
+    /**
+     * Поиск клиента питомника по id
+     */
     @Operation(
             summary = "Поиск клиента питомника по id.",
             responses = {
@@ -97,25 +87,20 @@ public class ClientController {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Client.class)
                             )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "клиент с данным id не найден."
                     )
             }
     )
     @GetMapping("{id}")
     public ResponseEntity<Client> getClient(
-            @Parameter(description = "Идентификатор клиента", example = "1")
+            //@Parameter(description = "Идентификатор клиента", example = "1")
             @PathVariable Long id) {
-        Client client = clientService.get(id);
-        if (client == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
         return ResponseEntity.ok(clientService.get(id));
     }
 
-
+    /**
+     * Получение всех клиентов из БД
+     */
     @Operation(
             summary = "Получение всех клиентов из БД.",
             responses = {
